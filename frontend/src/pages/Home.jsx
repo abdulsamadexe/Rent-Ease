@@ -31,26 +31,39 @@ export default function Home() {
       {/* Equipment Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {items.map(item => (
-          <div key={item.equipment_id} className="border p-4 rounded-lg hover:shadow-xl transition relative bg-white">
-            {/* Availability Badge */}
-            <span className={`absolute top-2 right-2 px-3 py-1 text-xs font-bold text-white rounded-full ${item.is_available ? 'bg-green-500' : 'bg-red-500'}`}>
-              {item.is_available ? 'AVAILABLE' : 'UNAVAILABLE'}
-            </span>
-
-            <h3 className="font-bold text-xl mb-1">{item.name}</h3>
-            <p className="text-gray-600 mb-2">{item.category}</p>
-            <p className="text-blue-600 font-bold text-lg mb-4">${item.price_per_day} <span className="text-sm text-gray-500 font-normal">/ day</span></p>
+          <div key={item.equipment_id} className="border rounded-lg hover:shadow-xl transition relative bg-white overflow-hidden">
             
-            {/* Action Button */}
-            {item.is_available ? (
-                <Link to={`/equipment/${item.equipment_id}`} className="block mt-2 text-center bg-gray-100 hover:bg-gray-200 py-2 rounded text-blue-800 font-semibold transition">
-                  View Details
-                </Link>
-            ) : (
-                <button disabled className="block mt-2 w-full text-center bg-gray-50 text-gray-400 py-2 rounded cursor-not-allowed border">
-                  Currently Unavailable
-                </button>
-            )}
+            {/* --- NEW: IMAGE DISPLAY --- */}
+            <div className="h-48 w-full bg-gray-200">
+              <img 
+                src={item.image_url || "https://via.placeholder.com/400x300?text=No+Image"} 
+                alt={item.name} 
+                className="w-full h-full object-cover"
+                onError={(e) => { e.target.src = "https://via.placeholder.com/400x300?text=Error"; }} // Fallback if link is broken
+              />
+            </div>
+
+            <div className="p-4">
+              {/* Availability Badge */}
+              <span className={`absolute top-2 right-2 px-3 py-1 text-xs font-bold text-white rounded-full ${item.is_available ? 'bg-green-500' : 'bg-red-500'}`}>
+                {item.is_available ? 'AVAILABLE' : 'UNAVAILABLE'}
+              </span>
+
+              <h3 className="font-bold text-xl mb-1">{item.name}</h3>
+              <p className="text-gray-600 mb-2">{item.category}</p>
+              <p className="text-blue-600 font-bold text-lg mb-4">${item.price_per_day} <span className="text-sm text-gray-500 font-normal">/ day</span></p>
+              
+              {/* Action Button */}
+              {item.is_available ? (
+                  <Link to={`/equipment/${item.equipment_id}`} className="block mt-2 text-center bg-gray-100 hover:bg-gray-200 py-2 rounded text-blue-800 font-semibold transition">
+                    View Details
+                  </Link>
+              ) : (
+                  <button disabled className="block mt-2 w-full text-center bg-gray-50 text-gray-400 py-2 rounded cursor-not-allowed border">
+                    Currently Unavailable
+                  </button>
+              )}
+            </div>
           </div>
         ))}
       </div>
